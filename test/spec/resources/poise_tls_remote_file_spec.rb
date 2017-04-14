@@ -18,7 +18,7 @@ require 'spec_helper'
 
 describe PoiseTlsRemoteFile::Resources::PoiseTlsRemoteFile do
   step_into(:tls_remote_file)
-  let(:tempfile) { Tempfile.new }
+  let(:tempfile) { Tempfile.new('chefout') }
   let(:stub_http_response) { double('Net::HTTPResponse', http_version: '1.1', code: '200', msg: 'OK') }
   let(:stub_cert_store) { double('OpenSSL::X509::Store') }
   let(:stub_http) { double('Net::HTTP', proxy_address: nil, cert_store: stub_cert_store) }
