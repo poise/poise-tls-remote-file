@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.version = PoiseTlsRemoteFile::VERSION
   spec.authors = ['Noah Kantrowitz']
   spec.email = %w{noah@coderanger.net}
-  spec.description = 'A Chef cookbook for managing something.'
+  spec.description = 'A Chef cookbook cookbook to download files over HTTPS using TLS client certificate authentication.'
   spec.summary = spec.description
   spec.homepage = 'https://github.com/poise/poise-tls-remote-file'
   spec.license = 'Apache 2.0'
