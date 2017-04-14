@@ -118,33 +118,27 @@ module PoiseTlsRemoteFile
       # @see Resource
       class Fetcher < Chef::Provider::RemoteFile::HTTP
         def fetch
-          http = Chef::HTTP::Simple.new(uri, http_client_opts)
-          # START OF CHANGES
           client_cert = new_resource.client_cert_obj
           client_key = new_resource.client_key_obj
           ca = new_resource.ca_objs
-          http.singleton_class.prepend(Module.new {
-            define_method(:http_client) do |*args|
-              super(*args).tap do |client|
-                client.http_client.cert = client_cert if client_cert
-                client.http_client.key = client_key if client_key
-                ca.each {|cert| client.http_client.cert_store.add_cert(cert) if cert }
+          begin
+            Chef::HTTP::Simple.singleton_class.send(:define_method, :new) do |*args|
+              super(*args).tap do |http_simple|
+                http_simple.singleton_class.prepend(Module.new {
+                  define_method(:http_client) do |*inner_args|
+                    super(*inner_args).tap do |client|
+                      client.http_client.cert = client_cert if client_cert
+                      client.http_client.key = client_key if client_key
+                      ca.each {|cert| client.http_client.cert_store.add_cert(cert) if cert }
+                    end
+                  end
+                })
               end
             end
-          })
-          # END OF CHANGES
-          if want_progress?
-            tempfile = http.streaming_request_with_progress(uri, headers) do |size, total|
-              events.resource_update_progress(new_resource, size, total, progress_interval)
-            end
-          else
-            tempfile = http.streaming_request(uri, headers)
+            super
+          ensure
+            Chef::HTTP::Simple.singleton_class.send(:remove_method, :new)
           end
-          if tempfile
-            update_cache_control_data(tempfile, http.last_response)
-            tempfile.close
-          end
-          tempfile
         end
       end
 
