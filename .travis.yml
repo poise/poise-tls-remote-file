@@ -3,62 +3,54 @@ cache: bundler
 language: ruby
 env:
   global:
-  - secure: MCHx6egTDntqTyaN0V9SiLutN33vxak4ue3RI4KaztI5rqrCZDGOfqA4JEDBS5Zd+MWgkOFVK0yof23x9bQkISme5caNayIPJZd1KjQf7Hyvs+6ccm2yXOV4xr/7b3I4OrL2Bk9P1l2fhlUrsRZhbd+gLbE3beuFbmL5mzdanvOw7AU2xs00cy9Cu3AE+5f0Gp+Ymdsm0z3GgFK39uOzB0dNQpRmaCsq0Oo5i9ZRp12+96h9FjYeYs1TbtTwBImljfbreC5ejM+wtjA65YoYPtsWr6C5enP3rlxn28ys6Bqmb8e8h+cfuVMBZKkyJ6xiJDZMQM/W3yYMmaeFwJmpZPnmr8X1/JVZvVxnL4skMdLTCOdYvgV1jp05tHyp+0MJ1o/FpTHDdGFwVFZ8KvySn20U1OYKDJ7yDHMH+//ZpOaR5N3qOu90GV3nwZN92opaJYBayjUZGv12HS2dxzmez3kEdAm8hWjilFIAJTcoivCihl/XO70gOse2uBi8/mfVnqp1Gj5244cO/pLbAtvuWjWns4tpkoY4bJ0Nb/t909j6Ms4HgtiC9vJZVtZoKXn0DASN21i4uxGyMgVohZB3pVDJ0lBmjnbsk03jEK76FOh7IXCZuJ2eepQ+Fyzhj5j3wPtIfD1ltDAco8H42cm3taJ1Ti+pZT9RLLpvxgHKZ3c=
+    - secure: MCHx6egTDntqTyaN0V9SiLutN33vxak4ue3RI4KaztI5rqrCZDGOfqA4JEDBS5Zd+MWgkOFVK0yof23x9bQkISme5caNayIPJZd1KjQf7Hyvs+6ccm2yXOV4xr/7b3I4OrL2Bk9P1l2fhlUrsRZhbd+gLbE3beuFbmL5mzdanvOw7AU2xs00cy9Cu3AE+5f0Gp+Ymdsm0z3GgFK39uOzB0dNQpRmaCsq0Oo5i9ZRp12+96h9FjYeYs1TbtTwBImljfbreC5ejM+wtjA65YoYPtsWr6C5enP3rlxn28ys6Bqmb8e8h+cfuVMBZKkyJ6xiJDZMQM/W3yYMmaeFwJmpZPnmr8X1/JVZvVxnL4skMdLTCOdYvgV1jp05tHyp+0MJ1o/FpTHDdGFwVFZ8KvySn20U1OYKDJ7yDHMH+//ZpOaR5N3qOu90GV3nwZN92opaJYBayjUZGv12HS2dxzmez3kEdAm8hWjilFIAJTcoivCihl/XO70gOse2uBi8/mfVnqp1Gj5244cO/pLbAtvuWjWns4tpkoY4bJ0Nb/t909j6Ms4HgtiC9vJZVtZoKXn0DASN21i4uxGyMgVohZB3pVDJ0lBmjnbsk03jEK76FOh7IXCZuJ2eepQ+Fyzhj5j3wPtIfD1ltDAco8H42cm3taJ1Ti+pZT9RLLpvxgHKZ3c=
 before_install:
-- if [[ $BUNDLE_GEMFILE == *master.gemfile ]]; then gem update --system; fi
-- gem --version
-- gem install bundler
-- bundle --version
-- bundle config --local path ${BUNDLE_PATH:-$(dirname $BUNDLE_GEMFILE)/vendor/bundle}
-- bundle config --local bin $PWD/bin
+  - 'if [[ $BUNDLE_GEMFILE == *master.gemfile ]]; then gem update --system; fi'
+  - gem --version
+  - gem install bundler
+  - bundle --version
+  - 'bundle config --local path ${BUNDLE_PATH:-$(dirname $BUNDLE_GEMFILE)/vendor/bundle}'
+  - bundle config --local bin $PWD/bin
 install: bundle update --jobs=3 --retry=3
 script:
-- "./bin/rake travis"
+  - ./bin/rake travis
 matrix:
   include:
-  - rvm: 2.3.1
-    gemfile: test/gemfiles/chef-12.gemfile
-  - rvm: 2.4.1
-    gemfile: test/gemfiles/chef-13.gemfile
-  - rvm: 2.1.4
-    gemfile: test/gemfiles/chef-12.1.gemfile
-  - rvm: 2.1.4
-    gemfile: test/gemfiles/chef-12.2.gemfile
-  - rvm: 2.1.4
-    gemfile: test/gemfiles/chef-12.3.gemfile
-  - rvm: 2.1.6
-    gemfile: test/gemfiles/chef-12.4.gemfile
-  - rvm: 2.1.6
-    gemfile: test/gemfiles/chef-12.5.gemfile
-  - rvm: 2.1.6
-    gemfile: test/gemfiles/chef-12.6.gemfile
-  - rvm: 2.1.6
-    gemfile: test/gemfiles/chef-12.7.gemfile
-  - rvm: 2.1.6
-    gemfile: test/gemfiles/chef-12.8.gemfile
-  - rvm: 2.1.8
-    gemfile: test/gemfiles/chef-12.9.gemfile
-  - rvm: 2.1.8
-    gemfile: test/gemfiles/chef-12.10.gemfile
-  - rvm: 2.1.8
-    gemfile: test/gemfiles/chef-12.11.gemfile
-  - rvm: 2.1.8
-    gemfile: test/gemfiles/chef-12.12.gemfile
-  - rvm: 2.1.9
-    gemfile: test/gemfiles/chef-12.13.gemfile
-  - rvm: 2.3.1
-    gemfile: test/gemfiles/chef-12.14.gemfile
-  - rvm: 2.3.1
-    gemfile: test/gemfiles/chef-12.15.gemfile
-  - rvm: 2.3.1
-    gemfile: test/gemfiles/chef-12.16.gemfile
-  - rvm: 2.3.1
-    gemfile: test/gemfiles/chef-12.17.gemfile
-  - rvm: 2.3.1
-    gemfile: test/gemfiles/chef-12.18.gemfile
-  - rvm: 2.3.1
-    gemfile: test/gemfiles/chef-12.19.gemfile
-  - rvm: 2.4.1
-    gemfile: test/gemfiles/chef-13.0.gemfile
-  - rvm: 2.4.1
-    gemfile: test/gemfiles/master.gemfile
+    - rvm: 2.3.1
+      gemfile: test/gemfiles/chef-12.gemfile
+    - rvm: 2.4.1
+      gemfile: test/gemfiles/chef-13.gemfile
+    - rvm: 2.1.6
+      gemfile: test/gemfiles/chef-12.5.gemfile
+    - rvm: 2.1.6
+      gemfile: test/gemfiles/chef-12.6.gemfile
+    - rvm: 2.1.6
+      gemfile: test/gemfiles/chef-12.7.gemfile
+    - rvm: 2.1.6
+      gemfile: test/gemfiles/chef-12.8.gemfile
+    - rvm: 2.1.8
+      gemfile: test/gemfiles/chef-12.9.gemfile
+    - rvm: 2.1.8
+      gemfile: test/gemfiles/chef-12.10.gemfile
+    - rvm: 2.1.8
+      gemfile: test/gemfiles/chef-12.11.gemfile
+    - rvm: 2.1.8
+      gemfile: test/gemfiles/chef-12.12.gemfile
+    - rvm: 2.1.9
+      gemfile: test/gemfiles/chef-12.13.gemfile
+    - rvm: 2.3.1
+      gemfile: test/gemfiles/chef-12.14.gemfile
+    - rvm: 2.3.1
+      gemfile: test/gemfiles/chef-12.15.gemfile
+    - rvm: 2.3.1
+      gemfile: test/gemfiles/chef-12.16.gemfile
+    - rvm: 2.3.1
+      gemfile: test/gemfiles/chef-12.17.gemfile
+    - rvm: 2.3.1
+      gemfile: test/gemfiles/chef-12.18.gemfile
+    - rvm: 2.3.1
+      gemfile: test/gemfiles/chef-12.19.gemfile
+    - rvm: 2.4.1
+      gemfile: test/gemfiles/chef-13.0.gemfile
+    - rvm: 2.4.1
+      gemfile: test/gemfiles/master.gemfile

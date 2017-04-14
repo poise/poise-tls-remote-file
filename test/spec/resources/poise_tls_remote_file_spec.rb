@@ -32,7 +32,7 @@ describe PoiseTlsRemoteFile::Resources::PoiseTlsRemoteFile do
     allow(IO).to receive(:read).with('/test/client.pem') { IO.read(File.expand_path('../../../cookbook/files/client.pem', __FILE__)) }
     allow(IO).to receive(:read).with('/test/ca.crt') { IO.read(File.expand_path('../../../cookbook/files/ca.crt', __FILE__)) }
     # Stub core HTTP stuffs.
-    allow(Net::HTTP).to receive(:new).with('example.com', 443, nil).and_return(stub_http)
+    allow(Net::HTTP).to receive(:new).and_return(stub_http)
     allow(stub_http).to receive(:proxy_port=).with(nil)
     allow(stub_http).to receive(:use_ssl=).with(true)
     allow(stub_http).to receive(:verify_mode=).with(1)
