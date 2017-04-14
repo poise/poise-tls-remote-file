@@ -46,6 +46,15 @@ error_log /test/error.log;
 
 http {
   server {
+    listen 80;
+    server_name localhost;
+
+    location / {
+      root /test;
+    }
+  }
+
+  server {
     listen 443;
     ssl on;
     server_name localhost;
@@ -79,4 +88,9 @@ tls_remote_file '/output2' do
   source 'https://localhost/target'
   client_cert '/test/client.pem'
   ca '/test/ca.crt'
+end
+
+# Make sure I didn't break normal remote_file.
+remote_file '/output3' do
+  source 'http://localhost/target'
 end
