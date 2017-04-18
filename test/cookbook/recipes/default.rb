@@ -68,6 +68,19 @@ http {
       root /test;
     }
   }
+
+  server {
+    listen 444;
+    ssl on;
+    server_name localhost;
+
+    ssl_certificate /test/server.crt;
+    ssl_certificate_key  /test/server.key;
+
+    location / {
+      root /test;
+    }
+  }
 }
 EOH
 end
@@ -90,7 +103,24 @@ tls_remote_file '/output2' do
   ca '/test/ca.crt'
 end
 
+# Test with no client key, just normal HTTPS as fallback.
+tls_remote_file '/output3' do
+  source 'https://localhost:444/target'
+  ca '/test/ca.crt'
+end
+
+# And even more fallback, just plain HTTP.
+tls_remote_file '/output4' do
+  source 'http://localhost/target'
+end
+
+# HTTP even with a CA cert.
+tls_remote_file '/output5' do
+  source 'http://localhost/target'
+  ca '/test/ca.crt'
+end
+
 # Make sure I didn't break normal remote_file.
-remote_file '/output3' do
+remote_file '/output6' do
   source 'http://localhost/target'
 end

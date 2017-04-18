@@ -327,4 +327,30 @@ EOH
       run_chef
     end
   end # /context with node["poise-tls-remote-file"]["ca"]
+
+  context 'with no additional properties' do
+    it { expect { run_chef }.to_not raise_error }
+  end # /context with no additional properties
+
+  context 'with an HTTP URL' do
+    before do
+      allow(stub_http).to receive(:cert_store).and_return(nil)
+    end
+    recipe do
+      tls_remote_file node['test_tempfile'] do
+        source 'http://example.com/'
+      end
+    end
+    it { expect { run_chef }.to_not raise_error }
+
+    context 'with a CA cert' do
+      recipe do
+        tls_remote_file node['test_tempfile'] do
+          source 'http://example.com/'
+          ca '/test/ca.crt'
+        end
+      end
+      it { expect { run_chef }.to_not raise_error }
+    end # /context with a CA cert
+  end # /context with an HTTP URL
 end

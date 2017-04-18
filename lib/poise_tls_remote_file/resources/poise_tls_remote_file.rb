@@ -129,7 +129,8 @@ module PoiseTlsRemoteFile
                     super(*inner_args).tap do |client|
                       client.http_client.cert = client_cert if client_cert
                       client.http_client.key = client_key if client_key
-                      ca.each {|cert| client.http_client.cert_store.add_cert(cert) if cert }
+                      # cert_store is nil if this is not an HTTPS URL.
+                      ca.each {|cert| client.http_client.cert_store.add_cert(cert) if cert } if client.http_client.cert_store
                     end
                   end
                 })

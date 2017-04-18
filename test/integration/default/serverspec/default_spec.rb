@@ -28,3 +28,15 @@ end
 describe file('/output3') do
   its(:content) { is_expected.to eq "Hello world\n" }
 end
+
+describe file('/output4') do
+  its(:content) { is_expected.to eq "Hello world\n" }
+end
+
+describe file('/output5') do
+  its(:content) { is_expected.to eq "Hello world\n" }
+end
+
+describe file('/output6') do
+  its(:content) { is_expected.to eq "Hello world\n" }
+end
