@@ -8,7 +8,7 @@
 [![License](https://img.shields.io/badge/license-Apache_2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 A [Chef](https://www.chef.io/) cookbook to download files over HTTPS using TLS
-client certificate authentication.
+client certificate authentication or with custom CA certificates.
 
 ## Quick Start
 
@@ -18,6 +18,29 @@ To download a file using TLS client certificate authentication:
 tls_remote_file '/path/to/file' do
   client_cert '/etc/ssl/client.crt'
   client_key '/etc/ssl/private/client.key'
+end
+```
+
+To specify a CA certificate for the download:
+
+```ruby
+tls_remote_file '/path/to/file' do
+  ca '/etc/ssl/mycompany.crt'
+end
+```
+
+Certificates and keys can also be specified in-line as strings or retrieved
+from other APIs like Chef data bags:
+
+```ruby
+tls_remote_file '/path/to/file' do
+  client_cert data_bag_item('client_keys', node.chef_environment)['key']
+  ca <<-EOH
+-----BEGIN CERTIFICATE-----
+MIIFEjCCAvoCAQIwDQYJKoZIhvcNAQEFBQAwRTELMAkGA1UEBhMCQVUxEzARBgNV
+...
+-----END CERTIFICATE-----
+EOH
 end
 ```
 
